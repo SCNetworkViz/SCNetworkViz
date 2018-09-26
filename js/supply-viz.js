@@ -342,6 +342,7 @@ function createSupplyVizGraph(panel, graph) {
     let parentHeight = d3v4.select('#supply_chain_graph').node().clientHeight;
 
     var svg = d3v4.select('#supply_chain_graph');
+
     svg.attr('width', parentWidth);
     svg.attr('height', parentHeight);
 
