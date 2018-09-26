@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SCNetworkViz Demo</title>
+    <link rel="icon" href="/css/images/favicon.png"/>
+</head>
+<body>
+
+<!-- Panel Code -->
+<form id="main_form">
+
+    <div id="wrap">
+
+        <div id="header">
+            <a id="title" style="color: #0e90d2; font-weight: bold; font-size: 1.5em"> SCNetworkViz Demo </a>
+        </div>
+
+        <br>
+
+        <div id="container">
+            <div id="left_side">
+                <div id="left_panel_company_title">
+                    Profile
+                </div>
+                <table id="left_company_detail_info">
+                    <tr>
+                        <td id="nodeTick">Ticker:</td>
+                    </tr>
+                    <tr>
+                        <td id="nodeCountry">Country:</td>
+                    </tr>
+                    <tr>
+                        <td id="nodeProvince">Province:</td>
+                    </tr>
+                    <tr>
+                        <td id="nodeCity">City:</td>
+                    </tr>
+                    <tr>
+                        <td id="nodeHome">Home Region:</td>
+                    </tr>
+                    <tr>
+                        <td id="nodeActive">Active Status:</td>
+                    </tr>
+                    <tr>
+                        <td id="nodeISIN">ISIN:</td>
+                    </tr>
+                    <tr>
+                        <td id="nodeInvest">Investor:</td>
+                    </tr>
+                    <tr>
+                        <td id="nodeCUSIP">CUSIP:</td>
+                    </tr>
+                    <tr>
+                        <td id="nodeStart">Start Time:</td>
+                    </tr>
+                    <tr>
+                        <td id="nodeEnd">End Time:</td>
+                    </tr>
+                </table>
+
+                <br>
+
+                <div id="left_panel_relation_title">
+                    Relation
+                </div>
+                <table id="left_relation_detail_info">
+                    <tr>
+                        <td id="relSource">Source:</td>
+                    </tr>
+                    <tr>
+                        <td id="relTarget">Target:</td>
+                    </tr>
+                    <tr>
+                        <td id="relType">Relation:</td>
+                    </tr>
+                    <tr>
+                        <td id="relDet">Relation Detail:</td>
+                    </tr>
+                    <tr>
+                        <td id="relRev">Revenue:</td>
+                    </tr>
+                    <tr>
+                        <td id="relRevEst">Revenue Estimated:</td>
+                    </tr>
+                    <tr>
+                        <td id="relSub">Subsidiaries:</td>
+                    </tr>
+                    <tr>
+                        <td id="relKey1">Keyword1:</td>
+                    </tr>
+                    <tr>
+                        <td id="relKey2">Keyword2:</td>
+                    </tr>
+                    <tr>
+                        <td id="relKey3">Keyword3:</td>
+                    </tr>
+                    <tr>
+                        <td id="relStart">Start Time:</td>
+                    </tr>
+                    <tr>
+                        <td id="relEnd">End Time:</td>
+                    </tr>
+                </table>
+
+            </div>
+
+            <div id="content">
+                <div id="search-box" align="center">
+                </div>
+
+                <div align="center" id="supply-viz"
+                     style="width: 900px; height: 600px; margin: auto auto auto auto;">
+                    <svg id="supply_chain_graph" style="width: 900px; height: 550px;"></svg>
+                    <!-- <div id="supply_chain_graph_legend" style="width: 900px; height: 50px;"></div> -->
+                    <div id="rel-annot" style="font-size: 10px" align="left"> Link Type: </div>
+                    <div id="rel-legend"></div>
+                </div>
+            </div>
+
+            <div id="right_side">
+                <div id="out_rel">
+                    Out Relation
+                </div>
+                <table id="out_rel_table" class="display" style="width:100%">
+                    <thead>
+                    <tr>
+                        <th>Target Company</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                        <th>Relation</th>
+                        <th>Relation Detail</th>
+                        <th>Revenue (%)</th>
+                        <th>Revenue Estimated</th>
+                        <th>Subsidiaries</th>
+                    </tr>
+                    </thead>
+                </table>
+
+                <div id="in_rel">
+                    In Relation
+                </div>
+                <table id="in_rel_table" class="display" style="width:100%">
+                    <thead>
+                    <tr>
+                        <th>Source Company</th>
+                        <th>Start Time</th>
+                        <th>End Time</th>
+                        <th>Relation</th>
+                        <th>Relation Detail</th>
+                        <th>Revenue (%)</th>
+                        <th>Revenue Estimated</th>
+                        <th>Subsidiaries</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+        </div>
+
+        <br>
+
+
+        <div id="product-container">
+            <div id="product_list_title">
+                Product
+            </div>
+            <div id="product_list_tree"
+                 style="height: 100%;   display: flex;   align-items: center;   justify-content: center;"></div>
+        </div>
+
+    </div>
+
+    <div id="footer">
+
+    </div>
+
+    </div>
+</form>
+
+
+<!-- JS Code -->
+
+<link rel='stylesheet' href='css/supply-viz.css'>
+<link rel="stylesheet" type="text/css" href="css/select2.min.css"/>
+<link rel="stylesheet" type="text/css" href="css/jquery.dataTables.min.css">
+
+<script src="js/d3.v4.js"></script>
+<script src="js/d3v4-brush-lite.js"></script>
+<script src="js/supply-viz.js"></script>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript" src="js/select2.min.js"></script>
+<script src="js/jquery.dataTables.min.js"></script>
+
+<script id="generate_main_graph">
+    var graph_panel = d3.select('#supply-viz');
+
+    d3.json('total.json', function (error, graph) {
+        if (!error) {
+            createSupplyVizGraph(graph_panel, graph);
+        } else {
+            console.error(error);
+        }
+    });
+
+</script>
+
+
+<!-- Global site tag (gtag.js) - Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=UA-122672576-1"></script>
+<script>
+    window.dataLayer = window.dataLayer || [];
+
+    function gtag() {
+        dataLayer.push(arguments);
+    }
+
+    gtag('js', new Date());
+
+    gtag('config', 'UA-122672576-1');
+
+    gtag('set', {'user_id': 'USER_ID'});
+</script>
+
+</body>
+</html>
